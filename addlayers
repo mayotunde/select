@@ -6,33 +6,41 @@
     <link 
         rel="stylesheet" 
         href="http://cdn.leafletjs.com/leaflet-0.7/leaflet.css"  />
-    <link rel="stylesheet" href="https://makinacorpus.github.io/Leaflet.FileLayer/Font-Awesome/css/font-awesome.min.css" />
+    <link rel="stylesheet" href="http://makinacorpus.github.io/Leaflet.FileLayer/Font-Awesome/css/font-awesome.min.css" />
 </head>
 <body>
     <div id="map" style="width: 700px; height: 500px"></div>
 
     <script src="http://cdn.leafletjs.com/leaflet-0.7/leaflet.js"></script>
-    <script src="https://makinacorpus.github.io/Leaflet.FileLayer/leaflet.filelayer.js">
+    <script src="http://makinacorpus.github.io/Leaflet.FileLayer/leaflet.filelayer.js">
     </script>
-    <script src="https://makinacorpus.github.io/Leaflet.FileLayer/togeojson/togeojson.js">
+    <script src="http://makinacorpus.github.io/Leaflet.FileLayer/togeojson/togeojson.js">
     </script>
-    <script>
-var map = L.map('map').setView([9.00, 8.00], 4);
 
-mapLink = '<a href="http://mapbox.com">Mapbox</a>,'+'<a href="http://mapsnigeriainitiative.wordpress.com">mapsNI</a>';
-        L.tileLayer('https://api.tiles.mapbox.com/v4/mapbox.streets/{z}/{x}/{y}.png?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6IjZjNmRjNzk3ZmE2MTcwOTEwMGY0MzU3YjUzOWFmNWZhIn0.Y8bhBaUMqFiPrDRW9hieoQ',
-{attribution:' Map data &copy;' + mapLink, maxZoom: 18}).addTo(map);
+    <script>
+        var map = L.map('map').setView([4.6, 2.9], 5);
+        mapLink = '<a href="http://openstreetmap.org">OpenStreetMap</a>';
+        L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '&copy; ' + mapLink + ' Contributors', maxZoom: 18, }).addTo(map);
 
        function onEachFeature(feature, layer){
-  if(feature.properties&&feature.properties.name&&feature.properties.NAME_1){
-layer.bindPopup(feature.properties.name + "<br>" + feature.properties.NAME_1);}}
+  if(feature.properties&&feature.properties.name&&feature.properties.population){
+layer.bindPopup(feature.properties.name + "<br>" + feature.properties.population);}}
 
-      L.Control.FileLayerLoad.LABEL = '<i class="fa fa-folder-open"></i>';
+        L.Control.FileLayerLoad.LABEL = '<i class="fa fa-folder-open"></i>';
         L.Control.fileLayerLoad({
-                       layerOptions: {onEachFeature,style}}).addTo(map);
-
+            fitBounds: true,
+            layerOptions: {onEachFeature,
+                                    style: function(feature, layer){
+		     var fillColor, pop = feature.properties.population;
+		     if (pop > 4000000) fillColor = '#ea7';
+		     else if (pop > 3000000)  fillColor = 'yellow';
+	                     else if (pop > 2000000)  fillColor = '#FED976';
+		 return{fillColor: fillColor, color: 'black', fillOpacity: 0.7}; }}
+        }).addTo(map);
 
     </script>
 </body>
 </html>
+
 
