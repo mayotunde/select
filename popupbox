@@ -1,0 +1,1107 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8"  />
+<title>Leaflet Popup window in the web map</title>
+<meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no' />
+<script src='http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.js'></script>
+<link href='http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.css' rel='stylesheet' />
+<script src='http://code.jquery.com/jquery-2.1.0.min.js'></script>
+</head>
+
+<body>
+
+<div id='map' style="width: 600px;height: 400px";></div>
+<div id='info' class='info'></div>
+
+<script>
+var map = L.map('map')
+        .setView([2.000, 14.0587], 5);
+
+var info = document.getElementById('info');
+
+mapLink = 
+'<a href="https://mapbox.com">mapbox</a>,'+
+'<a href="http://mapsnigeriainitiative.wordpress.com">mapsnigeriainitiative</a>';
+L.tileLayer(
+'https://api.tiles.mapbox.com/v4/mapbox.streets/{z}/{x}/{y}.png?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6IjZjNmRjNzk3ZmE2MTcwOTEwMGY0MzU3YjUzOWFmNWZhIn0.Y8bhBaUMqFiPrDRW9hieoQ',
+{ attribution:' Map data &copy;' + mapLink, maxZoom: 18, }).addTo(map);
+
+var done = L.geoJson(done).addTo(map);
+
+var cities = [
+    {
+      "type": "Feature",
+      "properties": {
+        "address": "Accra",
+        "city": "Accra",
+        "country": "Ghana",
+        "city_popul": 1605400,
+        "urban_area": 2756100,
+        "country_po": 27714000,
+        "cartodb_id": 22,
+        "CityType": "metropolis",
+        "per_urban": 10
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -0.1969,
+          5.55602
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "address": "Addis Ababa",
+        "city": "Addis Ababa",
+        "country": "Ethiopia",
+        "city_popul": 2638500,
+        "urban_area": 2638500,
+        "country_po": 90076000,
+        "cartodb_id": 10,
+        "CityType": "metropolis",
+        "per_urban": 3
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          38.74689,
+          9.02497
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "address": "Alexandria",
+        "city": "Alexandria",
+        "country": "Egypt",
+        "city_popul": 3806300,
+        "urban_area": 4345800,
+        "country_po": 88523000,
+        "cartodb_id": 4,
+        "CityType": "metropolis",
+        "per_urban": 5
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          29.95527,
+          31.21564
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "address": "Algiers",
+        "city": "Algiers",
+        "country": "Algeria",
+        "city_popul": 1696000,
+        "urban_area": 3815900,
+        "country_po": 39903000,
+        "cartodb_id": 19,
+        "CityType": "metropolis",
+        "per_urban": 10
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          3.04197,
+          36.7525
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "address": "Brazzaville",
+        "city": "Brazzaville",
+        "country": "Congo",
+        "city_popul": 1133800,
+        "urban_area": 1133800,
+        "country_po": 4706000,
+        "cartodb_id": 32,
+        "CityType": "cosmopolis",
+        "per_urban": 24
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          15.28318,
+          -4.26613
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "address": "Cairo",
+        "city": "Cairo",
+        "country": "Egypt",
+        "city_popul": 7764700,
+        "urban_area": 15546100,
+        "country_po": 88523000,
+        "cartodb_id": 2,
+        "CityType": "megapolis",
+        "per_urban": 18
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          31.24967,
+          30.06263
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "address": "Cape Town",
+        "city": "Cape Town",
+        "country": "South Africa",
+        "city_popul": 2686000,
+        "urban_area": 3086600,
+        "country_po": 54844000,
+        "cartodb_id": 9,
+        "CityType": "metropolis",
+        "per_urban": 6
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          18.42322,
+          -33.92584
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "address": "Casablanca",
+        "city": "Casablanca",
+        "country": "Morocco",
+        "city_popul": 3344300,
+        "urban_area": 3344300,
+        "country_po": 33680000,
+        "cartodb_id": 5,
+        "CityType": "metropolis",
+        "per_urban": 10
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -7.61138,
+          33.58831
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "address": "Conakry",
+        "city": "Conakry",
+        "country": "Guinea",
+        "city_popul": 1595800,
+        "urban_area": 1595800,
+        "country_po": 10935000,
+        "cartodb_id": 24,
+        "CityType": "metropolis",
+        "per_urban": 15
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -13.67729,
+          9.53795
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "address": "Dakar",
+        "city": "Dakar",
+        "country": "Senegal",
+        "city_popul": 2384000,
+        "urban_area": 2384000,
+        "country_po": 14150000,
+        "cartodb_id": 14,
+        "CityType": "metropolis",
+        "per_urban": 17
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -17.44406,
+          14.6937
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "address": "Dar es Salaam",
+        "city": "Dar es Salaam",
+        "country": "Tanzania",
+        "city_popul": 2456100,
+        "urban_area": 2456100,
+        "country_po": 48829000,
+        "cartodb_id": 13,
+        "CityType": "metropolis",
+        "per_urban": 5
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          39.26951,
+          -6.82349
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "address": "Douala",
+        "city": "Douala",
+        "country": "Cameroon",
+        "city_popul": 1239100,
+        "urban_area": 1449400,
+        "country_po": 21918000,
+        "cartodb_id": 27,
+        "CityType": "cosmopolis",
+        "per_urban": 7
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          9.70428,
+          4.04827
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "address": "Durban",
+        "city": "Durban",
+        "country": "South Africa",
+        "city_popul": 2354900,
+        "urban_area": 2354900,
+        "country_po": 54844000,
+        "cartodb_id": 15,
+        "CityType": "metropolis",
+        "per_urban": 4
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          31.0292,
+          -29.8579
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "address": "Harare",
+        "city": "Harare",
+        "country": "Zimbabwe",
+        "city_popul": 1864400,
+        "urban_area": 2264200,
+        "country_po": 13503000,
+        "cartodb_id": 18,
+        "CityType": "metropolis",
+        "per_urban": 17
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          31.05337,
+          -17.82772
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "address": "Ibadan",
+        "city": "Ibadan",
+        "country": "Nigeria",
+        "city_popul": 3078400,
+        "urban_area": 3670400,
+        "country_po": 184264000,
+        "cartodb_id": 8,
+        "CityType": "metropolis",
+        "per_urban": 2
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          3.90591,
+          7.37756
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "address": "Johannesburg",
+        "city": "Johannesburg",
+        "country": "South Africa",
+        "city_popul": 1646400,
+        "urban_area": 5014000,
+        "country_po": 54844000,
+        "cartodb_id": 21,
+        "CityType": "metropolis",
+        "per_urban": 9
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          28.04363,
+          -26.20227
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "address": "Kaduna",
+        "city": "Kaduna",
+        "country": "Nigeria",
+        "city_popul": 1458900,
+        "urban_area": 1458900,
+        "country_po": 184264000,
+        "cartodb_id": 25,
+        "CityType": "cosmopolis",
+        "per_urban": 1
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          7.43879,
+          10.52641
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "address": "Kano",
+        "city": "Kano",
+        "country": "Nigeria",
+        "city_popul": 3248700,
+        "urban_area": 3519500,
+        "country_po": 184264000,
+        "cartodb_id": 7,
+        "CityType": "metropolis",
+        "per_urban": 2
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          8.51672,
+          12.00012
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "address": "Khartoum",
+        "city": "Khartoum",
+        "country": "Sudan",
+        "city_popul": 1244500,
+        "urban_area": 5862500,
+        "country_po": 38435000,
+        "cartodb_id": 26,
+        "CityType": "cosmopolis",
+        "per_urban": 15
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          32.53241,
+          15.55177
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "address": "Lagos",
+        "city": "Lagos",
+        "country": "Nigeria",
+        "city_popul": 8029200,
+        "urban_area": 9123200,
+        "country_po": 184264000,
+        "cartodb_id": 1,
+        "CityType": "megapolis",
+        "per_urban": 5
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          3.39467,
+          6.45407
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "address": "Luanda",
+        "city": "Luanda",
+        "country": "Angola",
+        "city_popul": 2193400,
+        "urban_area": 2640500,
+        "country_po": 25326000,
+        "cartodb_id": 16,
+        "CityType": "metropolis",
+        "per_urban": 10
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          13.23432,
+          -8.83682
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "address": "Lusaka",
+        "city": "Lusaka",
+        "country": "Zambia",
+        "city_popul": 1218200,
+        "urban_area": 1720800,
+        "country_po": 15474000,
+        "cartodb_id": 30,
+        "CityType": "cosmopolis",
+        "per_urban": 11
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          28.28713,
+          -15.40669
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "address": "Maputo",
+        "city": "Maputo",
+        "country": "Mozambique",
+        "city_popul": 1088100,
+        "urban_area": 1639300,
+        "country_po": 25728000,
+        "cartodb_id": 34,
+        "CityType": "cosmopolis",
+        "per_urban": 6
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          32.58322,
+          -25.96553
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "address": "Mogadishu",
+        "city": "Mogadishu",
+        "country": "Somalia",
+        "city_popul": 1183100,
+        "urban_area": 1183100,
+        "country_po": 10972000,
+        "cartodb_id": 31,
+        "CityType": "cosmopolis",
+        "per_urban": 11
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          45.34375,
+          2.03711
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "address": "Nairobi",
+        "city": "Nairobi",
+        "country": "Kenya",
+        "city_popul": 2510800,
+        "urban_area": 3043100,
+        "country_po": 44090000,
+        "cartodb_id": 12,
+        "CityType": "metropolis",
+        "per_urban": 7
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          36.81667,
+          -1.28333
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "address": "Omdurman",
+        "city": "Omdurman",
+        "country": "Sudan",
+        "city_popul": 1670000,
+        "urban_area": 1670000,
+        "country_po": 38435000,
+        "cartodb_id": 20,
+        "CityType": "metropolis",
+        "per_urban": 4
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          32.47773,
+          15.64453
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "address": "Pretoria",
+        "city": "Pretoria",
+        "country": "South Africa",
+        "city_popul": 1228200,
+        "urban_area": 1514800,
+        "country_po": 54844000,
+        "cartodb_id": 28,
+        "CityType": "cosmopolis",
+        "per_urban": 3
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          28.18783,
+          -25.74486
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "address": "Rabat",
+        "city": "Rabat",
+        "country": "Morocco",
+        "city_popul": 1600700,
+        "urban_area": 1600700,
+        "country_po": 33680000,
+        "cartodb_id": 23,
+        "CityType": "metropolis",
+        "per_urban": 5
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -6.83255,
+          34.01325
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "address": "Soweto",
+        "city": "Soweto",
+        "country": "South Africa",
+        "city_popul": 1221100,
+        "urban_area": 1221100,
+        "country_po": 54844000,
+        "cartodb_id": 29,
+        "CityType": "cosmopolis",
+        "per_urban": 2
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          27.85849,
+          -26.26781
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "address": "Tripoli",
+        "city": "Tripoli",
+        "country": "Libya",
+        "city_popul": 1890600,
+        "urban_area": 2271800,
+        "country_po": 6521000,
+        "cartodb_id": 17,
+        "CityType": "metropolis",
+        "per_urban": 35
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          13.18746,
+          32.87519
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "address": "Yaoundé",
+        "city": "Yaoundé",
+        "country": "Cameroon",
+        "city_popul": 1122500,
+        "urban_area": 1356600,
+        "country_po": 21918000,
+        "cartodb_id": 33,
+        "CityType": "cosmopolis",
+        "per_urban": 6
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          11.51667,
+          3.86667
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "address": "Giza",
+        "city": "Giza",
+        "country": "Egypt",
+        "city_popul": 2541000,
+        "urban_area": 2541000,
+        "country_po": 88523000,
+        "cartodb_id": 11,
+        "CityType": "metropolis",
+        "per_urban": 3
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          31.21093,
+          30.00808
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "address": "Antananarivo",
+        "city": "Antananarivo",
+        "country": "Madagascar",
+        "city_popul": 875200,
+        "urban_area": 1359600,
+        "country_po": 23053000,
+        "cartodb_id": 47,
+        "CityType": "cosmopolis",
+        "per_urban": 6
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          47.53613,
+          -18.91368
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "address": "Bamako",
+        "city": "Bamako",
+        "country": "Mali",
+        "city_popul": 906700,
+        "urban_area": 1130800,
+        "country_po": 17796000,
+        "cartodb_id": 44,
+        "CityType": "cosmopolis",
+        "per_urban": 6
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -8,
+          12.65
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "address": "Bulawayo",
+        "city": "Bulawayo",
+        "country": "Zimbabwe",
+        "city_popul": 927600,
+        "urban_area": 927600,
+        "country_po": 13503000,
+        "cartodb_id": 42,
+        "CityType": "cosmopolis",
+        "per_urban": 7
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          28.58333,
+          -20.15
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "address": "Freetown",
+        "city": "Freetown",
+        "country": "Sierra Leone",
+        "city_popul": 1032100,
+        "urban_area": 1032100,
+        "country_po": 6513000,
+        "cartodb_id": 38,
+        "CityType": "cosmopolis",
+        "per_urban": 16
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -13.22994,
+          8.484
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "address": "Kampala",
+        "city": "Kampala",
+        "country": "Uganda",
+        "city_popul": 953400,
+        "urban_area": 1146700,
+        "country_po": 35760000,
+        "cartodb_id": 41,
+        "CityType": "cosmopolis",
+        "per_urban": 3
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          32.58219,
+          0.31628
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "address": "Maiduguri",
+        "city": "Maiduguri",
+        "country": "Nigeria",
+        "city_popul": 971700,
+        "urban_area": 971700,
+        "country_po": 184264000,
+        "cartodb_id": 40,
+        "CityType": "cosmopolis",
+        "per_urban": 1
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          13.15712,
+          11.84692
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "address": "Ouagadougou",
+        "city": "Ouagadougou",
+        "country": "Burkina Faso",
+        "city_popul": 839800,
+        "urban_area": 839800,
+        "country_po": 18450000,
+        "cartodb_id": 48,
+        "CityType": "cosmopolis",
+        "per_urban": 5
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -1.53388,
+          12.36566
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "address": "Port Elizabeth",
+        "city": "Port Elizabeth",
+        "country": "South Africa",
+        "city_popul": 833900,
+        "urban_area": 1047600,
+        "country_po": 54844000,
+        "cartodb_id": 49,
+        "CityType": "cosmopolis",
+        "per_urban": 2
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          25.57007,
+          -33.91799
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "address": "Port Harcourt",
+        "city": "Port Harcourt",
+        "country": "Nigeria",
+        "city_popul": 1053900,
+        "urban_area": 1190600,
+        "country_po": 184264000,
+        "cartodb_id": 36,
+        "CityType": "cosmopolis",
+        "per_urban": 1
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          7.0134,
+          4.77742
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "address": "Zaria",
+        "city": "Zaria",
+        "country": "Nigeria",
+        "city_popul": 898900,
+        "urban_area": 898900,
+        "country_po": 184264000,
+        "cartodb_id": 46,
+        "CityType": "cosmopolis",
+        "per_urban": 0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          7.7227,
+          11.11128
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "address": "Benin",
+        "city": "Benin",
+        "country": "Nigeria",
+        "city_popul": 1051600,
+        "urban_area": 1051600,
+        "country_po": 184264000,
+        "cartodb_id": 37,
+        "CityType": "cosmopolis",
+        "per_urban": 1
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          5.62575,
+          6.33815
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "address": "Fez",
+        "city": "Fez",
+        "country": "Morocco",
+        "city_popul": 921200,
+        "urban_area": 921200,
+        "country_po": 33680000,
+        "cartodb_id": 43,
+        "CityType": "cosmopolis",
+        "per_urban": 3
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -4.9998,
+          34.03715
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "address": "Shubra El-Kheima",
+        "city": "Subra al-Haymah",
+        "country": "Egypt",
+        "city_popul": 995800,
+        "urban_area": 995800,
+        "country_po": 88523000,
+        "cartodb_id": 39,
+        "CityType": "cosmopolis",
+        "per_urban": 1
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          31.25053,
+          30.12511
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "address": "Abidjan",
+        "city": "Abidjan",
+        "country": "Cote d’ Ivoire",
+        "city_popul": 3310500,
+        "urban_area": 3972300,
+        "country_po": 23326000,
+        "cartodb_id": 6,
+        "CityType": "metropolis",
+        "per_urban": 17
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -4.033,
+          5.3167
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "address": "Kinshasa",
+        "city": "Kinshasa",
+        "country": "Democratic Republic of Congo",
+        "city_popul": 6301100,
+        "urban_area": 7527500,
+        "country_po": 71246000,
+        "cartodb_id": 3,
+        "CityType": "megapolis",
+        "per_urban": 11
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          15.3222,
+          -4.32505
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "address": "Lubumbashi",
+        "city": "Lubumbashi",
+        "country": "Democratic Republic of Congo",
+        "city_popul": 1074600,
+        "urban_area": 1074600,
+        "country_po": 71246000,
+        "cartodb_id": 35,
+        "CityType": "cosmopolis",
+        "per_urban": 2
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          27.4667,
+          -11.6667
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "address": "Kolwezi",
+        "city": "Kolwezi",
+        "country": "Democratic Republic of Congo",
+        "city_popul": 803900,
+        "urban_area": 803900,
+        "country_po": 71246000,
+        "cartodb_id": 50,
+        "CityType": "cosmopolis",
+        "per_urban": 1
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          25.4667,
+          -10.71675
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "address": "Mbuji-Mayi",
+        "city": "Mbuji-Mayi",
+        "country": "Democratic Republic of Congo",
+        "city_popul": 905800,
+        "urban_area": 1054400,
+        "country_po": 71246000,
+        "cartodb_id": 45,
+        "CityType": "cosmopolis",
+        "per_urban": 1
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          23.6,
+          -6.15
+        ]
+      }
+    }
+  ];
+
+L.geoJson(cities, {
+pointToLayer: function(feature, latlng){
+marker = L.marker(latlng);
+marker.bindPopup('<strong style="color:red">' + feature.properties.address + '</strong>')
+return marker;
+}}).addTo(done);
+
+done.on('mouseover', function(e) {
+e.layer.closePopup();
+var feature = e.layer.feature;
+var content = '<div><strong>' + feature.properties.address + '</strong>' + '<p><em>' + feature.properties.country + '</em></p></div>';
+info.innerHTML = content; 
+});
+
+
+</script>
+
+<style>
+.info{ position:absolute;top:20px;right: 490px;}
+.info div{padding: 20px; background: #f45; border: 1px solid black;}
+</style>
+</body>
+</html>
