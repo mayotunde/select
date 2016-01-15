@@ -6,15 +6,15 @@
     <link 
         rel="stylesheet" 
         href="http://cdn.leafletjs.com/leaflet-0.7/leaflet.css"  />
-    <link rel="stylesheet" href="http://makinacorpus.github.io/Leaflet.FileLayer/Font-Awesome/css/font-awesome.min.css" />
+    <link rel="stylesheet" href="https://makinacorpus.github.io/Leaflet.FileLayer/Font-Awesome/css/font-awesome.min.css" />
 </head>
 <body>
     <div id="map" style="width: 700px; height: 500px"></div>
 
     <script src="http://cdn.leafletjs.com/leaflet-0.7/leaflet.js"></script>
-    <script src="http://makinacorpus.github.io/Leaflet.FileLayer/leaflet.filelayer.js">
+    <script src="https://makinacorpus.github.io/Leaflet.FileLayer/leaflet.filelayer.js">
     </script>
-    <script src="http://makinacorpus.github.io/Leaflet.FileLayer/togeojson/togeojson.js">
+    <script src="https://makinacorpus.github.io/Leaflet.FileLayer/togeojson/togeojson.js">
     </script>
     <script>
 var map = L.map('map').setView([9.00, 8.00], 4);
