@@ -10,6 +10,7 @@
 </head>
 
 <body>
+<p style='color: red'>Hover your mouse pointer over the markers to activate the popup display</p>
 
 <div id='map' style="width: 600px;height: 400px";></div>
 <div id='info' class='info'></div>
